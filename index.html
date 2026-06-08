@@ -198,7 +198,7 @@ SLIDE_INIT['s1']=function(){
 <!-- ===== SLIDE 2 ===== -->
 <section class="slide" id="s2">
   <div class="kicker">02 · The problem</div>
-  <h2>One forecast hides uncertainty</h2>
+  <h2>The single-forecast problem</h2>
   <p class="lede">A single line looks authoritative — but it's just one draw from a range of plausible futures. Toggle the ensemble on and off to see what a lone forecast conceals.</p>
   <div class="cols">
     <div class="notes">
@@ -238,8 +238,8 @@ SLIDE_INIT['s1']=function(){
 <!-- ===== SLIDE 3 ===== -->
 <section class="slide" id="s3">
   <div class="kicker">03 · Where it comes from</div>
-  <h2>Two sources of uncertainty</h2>
-  <p class="lede">Forecast spread has two roots: we never know today's atmosphere perfectly (initial-condition error), and the model itself is an approximation (model error). Dial each one to see how it feeds the total spread.</p>
+  <h2>Initial condition and model error</h2>
+  <p class="lede">Spread has two roots: imperfect knowledge of today's state (IC error) and model approximations (model error). Dial each to see how it contributes.</p>
   <div class="cols">
     <div class="notes">
       <div class="note"><b>Initial condition errors</b><br>Observation limits · instrumental noise · spatial/temporal gaps · data-assimilation uncertainty.</div>
@@ -277,7 +277,7 @@ SLIDE_INIT['s1']=function(){
 <!-- ===== SLIDE 4 ===== -->
 <section class="slide" id="s4">
   <div class="kicker">04 · The physics</div>
-  <h2>Small errors grow — that's physics</h2>
+  <h2>Chaos and error growth</h2>
   <p class="lede">The atmosphere is chaotic: two states that start almost identical drift apart exponentially. Shrink the initial error all you like — it only buys you a little more lead time before forecasts diverge.</p>
   <div class="cols">
     <div class="notes">
@@ -317,8 +317,8 @@ SLIDE_INIT['s1']=function(){
 <!-- ===== SLIDE 5 ===== -->
 <section class="slide" id="s5">
   <div class="kicker">05 · The fix</div>
-  <h2>Run it many times, get a distribution</h2>
-  <p class="lede">Launch many runs from slightly different starts. Each is a plausible scenario; sliced at any lead time they form a distribution. Move the T+ slider — the coral line on the left picks the slice, and the PDF on the right is exactly that slice.</p>
+  <h2>The ensemble distribution</h2>
+  <p class="lede">Launch many runs from slightly different starts. Sliced at any lead time, the members form a distribution. Slide T+ to see how the PDF evolves.</p>
   <div class="cols">
     <div class="notes">
       <ul class="points">
@@ -382,14 +382,18 @@ SLIDE_INIT['s1']=function(){
 <!-- ===== SLIDE 6 ===== -->
 <section class="slide" id="s6">
   <div class="kicker">06 · How it's done</div>
-  <h2>How to create many plausible starting states</h2>
-  <p class="lede">You don't perturb at random. You nudge the analysis along the directions the atmosphere is most sensitive to — so a handful of members efficiently sample where the forecast can actually go. Left: the perturbed starts. Right: where they end up.</p>
+  <h2>Initial condition perturbations</h2>
+  <p class="lede">Perturb along directions the atmosphere is most sensitive to. A handful of members then efficiently spans the range of where the forecast can go. Left: perturbed starts. Right: resulting spread.</p>
   <div class="cols">
     <div class="notes">
       <ul class="points">
         <li>Perturb the starting state along directions most likely to cause divergence.</li>
         <li>Also vary model physics to sample model uncertainty.</li>
         <li>Each scenario stays physically self-consistent.</li>
+        <li><strong>Singular Vectors (SVs)</strong> — directions of maximum error growth over a finite window. Used by ECMWF ENS, combined with the Ensemble of Data Assimilations (EDA).</li>
+        <li><strong>Ensemble Transform Kalman Filter (ETKF)</strong> — propagates analysis uncertainty directly from data assimilation. Used by the UK Met Office MOGREPS.</li>
+        <li><strong>Ensemble Kalman Filter (EnKF)</strong> — members drawn from the operational EnKF analysis ensemble. Used by NCEP GEFS and Canada's GEPS.</li>
+        <li><strong>Stochastic physics (SPPT/SKEB)</strong> — random perturbations to parameterized tendencies and kinetic energy, layered on top of IC perturbations. Used by ECMWF, NCEP, and most operational centres.</li>
       </ul>
       <p class="takeaway">Comment: targeted perturbations line up along the growing direction (dashed). The same number of members then fans into a far wider, more useful forecast spread than random nudges.</p>
     </div>
@@ -439,8 +443,8 @@ SLIDE_INIT['s1']=function(){
 <!-- ===== SLIDE 7 ===== -->
 <section class="slide" id="s7">
   <div class="kicker">07 · Multi-model</div>
-  <h2>Different models, different errors — combined: better</h2>
-  <p class="lede">Each model carries its own bias and runs its own members. Because the biases partly cancel, the multi-model combination usually beats any single model. Toggle models and watch the combined mean track the truth.</p>
+  <h2>Multi-model ensembles</h2>
+  <p class="lede">Each model carries its own bias. Combined, they partly cancel — the multi-model mean usually beats any single model. Toggle models to see.</p>
   <div class="cols">
     <div class="notes">
       <div class="note">Independent models make <b>different mistakes</b>. Averaging them cancels part of each one's bias — the classic free lunch of multi-model ensembles.</div>
@@ -494,8 +498,8 @@ SLIDE_INIT['s1']=function(){
 <!-- ===== SLIDE 8 ===== -->
 <section class="slide" id="s8">
   <div class="kicker">08 · The trap</div>
-  <h2>The mean is not a forecast</h2>
-  <p class="lede">When members split into two camps — a storm tracking left or right — the distribution is bimodal. The mean lands in the empty valley between the peaks, a value almost no member predicts. Pull the scenarios apart and watch every summary statistic struggle.</p>
+  <h2>Bimodal distributions</h2>
+  <p class="lede">When members split into two scenarios, the distribution is bimodal. The mean lands in the empty valley — a value almost no member predicts. Pull the scenarios apart to see every summary statistic fail.</p>
   <div class="cols">
     <div class="notes">
       <div class="note">A bimodal ensemble is the textbook trap: the <b>mean sits where nothing happens</b>, and even the median can fall in the gap. The real forecast is "two outcomes, ~50/50".</div>
@@ -540,8 +544,8 @@ SLIDE_INIT['s1']=function(){
 <!-- ===== SLIDE 9 ===== -->
 <section class="slide" id="s9">
   <div class="kicker">09 · Reading it</div>
-  <h2>Three views of the same ensemble</h2>
-  <p class="lede">One ensemble, three standard reads — the real operational products forecasters use every day. Same uncertainty underneath, three ways to look at it.</p>
+  <h2>Ensemble products</h2>
+  <p class="lede">One ensemble, three standard products: spaghetti, plume, probability map. Same uncertainty — three ways to read it.</p>
   <div class="realstrip">
     <div class="realimg"><img src="" id="s9i1" alt="NCEP ensemble spaghetti"><div class="cap"><b style="color:var(--teal-d)">Spaghetti</b> — every member drawn; spot clustering and outliers.<br>NCEP 500 mb ensemble</div></div>
     <div class="realimg light"><img src="" id="s9i2" alt="ECMWF probability map"><div class="cap"><b style="color:var(--blue)">Probability / exceedance</b> — spread turned into actionable odds.<br>ECMWF precipitation</div></div>
@@ -555,8 +559,8 @@ SLIDE_INIT['s1']=function(){
 <!-- ===== SLIDE 10 ===== -->
 <section class="slide" id="s10">
   <div class="kicker">10 · Reading spread</div>
-  <h2>Spread signals confidence — not model quality</h2>
-  <p class="lede">Same model, different days. A calm day gives a tight cloud and a narrow PDF — high confidence. A volatile day gives a broad cloud and a wide PDF — there the distribution <i>is</i> the forecast. Switch between the two.</p>
+  <h2>Spread as a confidence signal</h2>
+  <p class="lede">Same model, different days. Calm day → tight spread, high confidence. Volatile day → wide spread — there the distribution <em>is</em> the forecast. Switch between the two.</p>
   <div class="cols">
     <div class="notes">
       <ul class="points">
@@ -604,22 +608,24 @@ SLIDE_INIT['s1']=function(){
 <!-- ===== SLIDE 11 ===== -->
 <section class="slide" id="s11">
   <div class="kicker">11 · Trust</div>
-  <h2>Probabilities must be calibrated</h2>
-  <p class="lede">"30% chance" only means something if, across many such days, it happens ~30% of the time. Issue forecasts across all probability levels and plot what was claimed against what occurred — that's a reliability diagram. Add miscalibration and watch the curve leave the diagonal.</p>
+  <h2>Reliability: do stated odds verify?</h2>
+  <p class="lede">Plot claimed probability vs observed frequency. Perfect calibration = diagonal. Overconfident model produces an S-shape <em>squeezed toward 50%</em>: above the line at low probabilities, below at high ones. Teal (calibrated) lands on the line.</p>
   <div class="cols">
     <div class="notes">
       <ul class="points">
-        <li>"30% chance of rain" should verify as rain ~30% of the time.</li>
-        <li>Calibration checks stated probabilities against observed frequencies.</li>
-        <li>A well-calibrated forecast: the stated odds are the real odds.</li>
+        <li>"30% chance of rain" should rain ~30% of the time — no more, no less.</li>
+        <li><strong>Overconfidence = too extreme.</strong> Model says 10% when true odds are 30% → point is <em>above</em> diagonal. Model says 90% when true odds are 70% → point is <em>below</em> diagonal.</li>
+        <li>In both cases the curve is squeezed toward 50%: the model uses probabilities closer to the extremes than the data supports.</li>
+        <li><strong>Teal (calibrated):</strong> post-processed. Stated odds match observed frequency — on the diagonal.</li>
+        <li>Sampling noise dominates with few cases — need thousands to see the true shape reliably.</li>
       </ul>
-      <p class="takeaway">Comment: perfect calibration sits on the grey diagonal. With few samples the points are noisy; with many, the true (mis)calibration shows through.</p>
+      <p class="takeaway">Comment: the S-shape is overconfidence. The model thinks it knows more than it does — spreads probabilities toward 0% and 100%. Calibration compresses them back toward what the data actually supports.</p>
     </div>
     <div class="viz">
       <div class="controls">
         <button class="act" id="s11run">▶ Re-simulate</button>
-        <div class="ctrl"><label>Miscalibration</label><input type="range" id="s11m" min="-8" max="8" value="0"><span class="val" id="s11mv">0</span></div>
-        <div class="ctrl"><label>Samples</label><input type="range" id="s11s" min="200" max="6000" value="2000" step="200"><span class="val" id="s11sv"></span></div>
+        <div class="ctrl"><label>Raw overconfidence</label><input type="range" id="s11m" min="0" max="10" value="6"><span class="val" id="s11mv">6</span></div>
+        <div class="ctrl"><label>Samples</label><input type="range" id="s11s" min="200" max="6000" value="2000" step="200"><span class="val" id="s11sv">2000</span></div>
       </div>
       <div class="chart-wrap"><canvas id="s11chart"></canvas></div>
       <div class="stat-row" id="s11stats"></div>
@@ -628,39 +634,45 @@ SLIDE_INIT['s1']=function(){
 </section>
 <script>SLIDE_INIT['s11']=function(){
   const bins=[5,15,25,35,45,55,65,75,85,95];let seed=1;
-  function trueProb(stated,m){const x=stated/100;const k=m*0.09;const y=0.5+(x-0.5)*(1-k);return Math.max(0,Math.min(1,y));}
-  function simulate(m,samples){const r=seededRand(seed++);const cnt=bins.map(()=>0),hit=bins.map(()=>0);
-    for(let i=0;i<samples;i++){const bi=Math.floor(r()*bins.length);cnt[bi]++;if(r()<trueProb(bins[bi],m))hit[bi]++;}
+  function rawCurve(o){const k=o/10;return bins.map(p=>{const x=p/100;return +(Math.max(0,Math.min(1,x+(0.5-x)*k*Math.sin(Math.PI*x)*1.1))*100).toFixed(1);});}
+  function simCal(samples){const r=seededRand(seed++);const cnt=bins.map(()=>0),hit=bins.map(()=>0);
+    for(let i=0;i<samples;i++){const bi=Math.floor(r()*bins.length);cnt[bi]++;if(r()<bins[bi]/100)hit[bi]++;}
     return bins.map((b,i)=>({x:b,y:cnt[i]?+(hit[i]/cnt[i]*100).toFixed(1):null}));}
   const ch=new Chart(document.getElementById('s11chart'),{type:'scatter',data:{datasets:[
-    {data:bins.map(p=>({x:p,y:p})),type:'line',borderColor:C.gray,borderWidth:1.5,borderDash:[6,4],pointRadius:0,order:3},
-    {data:simulate(0,2000),type:'line',borderColor:C.tealD,borderWidth:2.5,pointRadius:5,pointBackgroundColor:C.tealD,tension:.15,order:1}]},
-    options:{responsive:true,maintainAspectRatio:false,animation:{duration:200},plugins:{legend:{display:false},
-      tooltip:{callbacks:{title:i=>'forecast '+i[0].raw.x+'%',label:i=>'observed '+i.raw.y+'%'}}},
+    {data:bins.map(p=>({x:p,y:p})),type:'line',borderColor:C.gray,borderWidth:1.5,borderDash:[6,4],pointRadius:0,order:4},
+    {label:'raw',data:bins.map((p,i)=>({x:p,y:rawCurve(6)[i]})),type:'line',borderColor:C.coral,borderWidth:2.5,pointRadius:5,pointBackgroundColor:C.coral,tension:.2,order:2},
+    {label:'calibrated',data:simCal(2000),type:'line',borderColor:C.tealD,borderWidth:2.5,pointRadius:5,pointBackgroundColor:C.tealD,tension:.15,order:1}]},
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:200},
+      plugins:{legend:{display:false},tooltip:{callbacks:{title:i=>'forecast '+i[0].raw.x+'%',label:i=>i.dataset.label+' observed '+i.raw.y+'%'}}},
       scales:{x:{...axis('Forecast probability %'),min:0,max:100},y:{...axis('Observed frequency %'),min:0,max:100}}}});
-  function upd(){const m=+s11m.value,n=+s11s.value;s11mv.textContent=m;s11sv.textContent=n;
-    ch.data.datasets[1].data=simulate(m,n);ch.update();
-    s11stats.innerHTML=`<span class="pill ${Math.abs(m)<1?'good':'bad'}">${Math.abs(m)<1?'well calibrated — on the diagonal':m>0?'overconfident — claims too extreme':'under-confident — claims too timid'}</span>`;}
+  function upd(){const o=+s11m.value,n=+s11s.value;s11mv.textContent=o;s11sv.textContent=n;
+    ch.data.datasets[1].data=bins.map((p,i)=>({x:p,y:rawCurve(o)[i]}));
+    ch.data.datasets[2].data=simCal(n);ch.update();
+    const rawOk=o<2;
+    s11stats.innerHTML=`<span class="pill ${rawOk?'good':'bad'}" style="color:${C.coral}">${rawOk?'raw — well calibrated':'raw — overconfident (S-curve, squeezed toward 50%)'}</span><span class="pill good">calibrated — on the diagonal</span>`;}
   s11run.onclick=upd;s11m.oninput=upd;s11s.oninput=upd;upd();
 };</script>
 
 <!-- ===== SLIDE 12 ===== -->
 <section class="slide" id="s12">
-  <div class="kicker">12 · Calibrating the spread</div>
-  <h2>Raw output is an ingredient, not a forecast</h2>
-  <p class="lede">Post-processing isn't only about the median — the <i>width</i> matters most. The predictive PDF should be as wide as outcomes actually scatter. Tune the spread until the curve matches the histogram of what really happened.</p>
+  <div class="kicker">12 · The calibration step</div>
+  <h2>Shift, rescale, extract</h2>
+  <p class="lede">Each coral dot is a past observation. The raw ensemble PDF (gray) sits in the wrong place and is too narrow — watch how many dots fall outside its range. Calibration shifts by <em>bias</em> and inflates spread by <em>α</em> until the teal distribution covers the observations ~80% of the time.</p>
   <div class="cols">
     <div class="notes">
       <ul class="points">
-        <li>Raw output carries systematic biases — corrected against history.</li>
-        <li>Post-processing aligns the distribution: right median <b>and</b> right spread.</li>
-        <li>Too narrow = overconfident; too wide = useless. Aim to match reality.</li>
+        <li><strong>Coral dots</strong> — what actually happened on many past forecast days. Their scatter is the real uncertainty the forecast should match.</li>
+        <li><strong>Raw PDF (gray)</strong> — centered at 0, but the dots cluster to the right (bias) and spill outside its range (too narrow). It claims more certainty than it earns.</li>
+        <li><strong>Bias</strong> — horizontal shift that re-centers the distribution onto where the observations actually land.</li>
+        <li><strong>α</strong> — spread inflation: σ<sub>cal</sub> = α × σ<sub>raw</sub>. α &gt; 1 widens the over-confident raw spread.</li>
+        <li><span style="color:#378ADD;font-weight:600">P10</span> / <span style="color:#1D9E75;font-weight:600">P50</span> / <span style="color:#E8763A;font-weight:600">P90</span> — read off the calibrated curve. Goal: P10–P90 holds ~80% of the dots.</li>
       </ul>
-      <p class="takeaway">Comment: the bars are the actual outcomes; the curve is the forecast's predictive PDF. Under-dispersed forecasts look confident but are wrong too often.</p>
+      <p class="takeaway">Comment: read the coverage pills. The raw band holds only ~40% of past observations — far short of 80%. Drag bias toward +0.7 and α toward ~1.8 and the teal band finally covers four-fifths of the dots.</p>
     </div>
     <div class="viz">
       <div class="controls">
-        <div class="ctrl"><label>Forecast spread ×</label><input type="range" id="s12m" min="30" max="220" value="55" step="5"><span class="val" id="s12mv"></span></div>
+        <div class="ctrl"><label>Bias (mean shift)</label><input type="range" id="s12b" min="-20" max="20" value="0"><span class="val" id="s12bv"></span></div>
+        <div class="ctrl"><label>α (spread factor)</label><input type="range" id="s12a" min="3" max="30" value="10"><span class="val" id="s12av"></span></div>
       </div>
       <div class="chart-wrap"><canvas id="s12chart"></canvas></div>
       <div class="stat-row" id="s12stats"></div>
@@ -668,120 +680,103 @@ SLIDE_INIT['s1']=function(){
   </div>
 </section>
 <script>SLIDE_INIT['s12']=function(){
-  const r=seededRand(120),sigTrue=1.0;
-  const outs=Array.from({length:800},()=>gaussian(r)*sigTrue);
-  const xs=linspace(-4,4,180);
-  const reality=kde(outs,0.32,xs); // actual distribution of outcomes
-  function pdf(sig){const k=1/(sig*Math.sqrt(2*Math.PI));return xs.map(x=>k*Math.exp(-0.5*(x/sig)**2));}
+  const sigRaw=0.55;                         // raw ensemble spread — too narrow
+  const TRUE_MU=0.7,TRUE_SIG=1.0,z=1.282;    // observations really come from N(0.7,1.0)
+  const xs=linspace(-4,4,200);
+  // fixed archive of past observations — stays put as the sliders move
+  const ro=seededRand(317);
+  const OBS=Array.from({length:40},()=>+(TRUE_MU+gaussian(ro)*TRUE_SIG).toFixed(3));
+  const rj=seededRand(51);                    // jitter the rug so overlapping dots are visible
+  const obsPts=OBS.map(v=>({x:v,y:+(0.05+rj()*0.07).toFixed(4)}));
+  function pdfG(mu,sig){const k=1/(sig*Math.sqrt(2*Math.PI));return xs.map(x=>k*Math.exp(-0.5*((x-mu)/sig)**2));}
+  function coverage(mu,sig){const lo=mu-z*sig,hi=mu+z*sig;return OBS.filter(v=>v>=lo&&v<=hi).length/OBS.length;}
+  const rawP10=-z*sigRaw,rawP90=z*sigRaw,rawCov=Math.round(coverage(0,sigRaw)*100);
+  function vline(xv,col,lbl,dash,pos){return{type:'line',xMin:xv,xMax:xv,borderColor:col,borderWidth:2,borderDash:dash||[],
+    label:{display:true,content:lbl,position:pos||'start',color:col,backgroundColor:'rgba(255,255,255,0.85)',font:{size:11},yAdjust:2}};}
   const ch=new Chart(document.getElementById('s12chart'),{data:{datasets:[
-    {type:'line',data:xs.map((x,i)=>({x:+x.toFixed(3),y:+reality[i].toFixed(4)})),borderColor:'rgba(150,148,140,.9)',borderWidth:1.5,pointRadius:0,fill:true,backgroundColor:'rgba(180,178,169,.35)',tension:.4,order:3},
-    {type:'line',data:xs.map((x,i)=>({x:+x.toFixed(3),y:+pdf(0.55)[i].toFixed(4)})),borderColor:C.tealD,borderWidth:3,pointRadius:0,fill:false,tension:.4,order:1}]},
-    options:{responsive:true,maintainAspectRatio:false,animation:{duration:150},plugins:{legend:{display:false},tooltip:{enabled:false}},
-      scales:{x:{type:'linear',min:-4,max:4,...axis('Outcome')},y:{...axis('Density'),min:0,max:0.9,ticks:{callback:v=>v.toFixed(2)}}}}});
-  function upd(){const mult=(+s12m.value)/100;s12mv.textContent=mult.toFixed(2)+'×';
-    ch.data.datasets[1].data=xs.map((x,i)=>({x:+x.toFixed(3),y:+pdf(mult)[i].toFixed(4)}));ch.update();
-    const cover=outs.filter(o=>Math.abs(o)<=1.28*mult).length/outs.length*100;
-    const verdict=mult<0.8?['under-dispersed — overconfident','bad']:mult>1.3?['over-dispersed — too vague','bad']:['well-dispersed — matches reality','good'];
-    s12stats.innerHTML=`<span class="pill">P10–P90 coverage <b>${cover.toFixed(0)}%</b> (target 80%)</span><span class="pill ${verdict[1]}">${verdict[0]}</span>`;}
-  s12m.oninput=upd;upd();
+    {type:'line',data:[],borderColor:C.gray,borderWidth:1.5,borderDash:[6,4],pointRadius:0,fill:false,tension:.4,order:3},
+    {type:'line',data:[],borderColor:C.tealD,borderWidth:3,pointRadius:0,fill:true,backgroundColor:'rgba(29,158,117,.10)',tension:.4,order:2},
+    {type:'scatter',data:obsPts,pointBackgroundColor:'rgba(232,118,58,.75)',pointBorderColor:'#fff',pointBorderWidth:1,pointRadius:5,order:0}]},
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:120},
+      plugins:{legend:{display:false},tooltip:{enabled:false},annotation:{annotations:{}}},
+      scales:{x:{type:'linear',min:-4,max:4,...axis('Outcome (observed value)')},y:{...axis('Density'),min:0,max:1.2}}}});
+  function upd(){
+    const bias=(+s12b.value)/10,alpha=(+s12a.value)/10;
+    s12bv.textContent=(bias>0?'+':'')+bias.toFixed(1);s12av.textContent=alpha.toFixed(1);
+    const sigCal=+(alpha*sigRaw).toFixed(2),muCal=bias;
+    const rawY=pdfG(0,sigRaw),calY=pdfG(muCal,sigCal);
+    const yMax=Math.max(...rawY,...calY)*1.3;
+    ch.data.datasets[0].data=xs.map((x,i)=>({x:+x.toFixed(3),y:+rawY[i].toFixed(5)}));
+    ch.data.datasets[1].data=xs.map((x,i)=>({x:+x.toFixed(3),y:+calY[i].toFixed(5)}));
+    const p10=+(muCal-z*sigCal).toFixed(2),p90=+(muCal+z*sigCal).toFixed(2);
+    ch.options.plugins.annotation.annotations={
+      rawband:{type:'box',xMin:rawP10,xMax:rawP90,backgroundColor:'rgba(180,178,169,.16)',borderWidth:0},
+      p10:vline(p10,C.blue,'P10',[5,4]),
+      p50:vline(muCal,C.tealD,'P50',[]),
+      p90:vline(p90,C.coral,'P90',[5,4])
+    };
+    ch.options.scales.y.max=yMax;ch.update();
+    const calCov=Math.round(coverage(muCal,sigCal)*100),good=calCov>=75&&calCov<=85;
+    s12stats.innerHTML=`<span class="pill">σ<sub>raw</sub>=<b>${sigRaw}</b></span><span class="pill">α=<b>${alpha.toFixed(1)}</b></span><span class="pill">σ<sub>cal</sub>=<b>${sigCal}</b></span><span class="pill bad">raw band holds <b>${rawCov}%</b> of obs</span><span class="pill ${good?'good':'bad'}">calibrated holds <b>${calCov}%</b>${good?' ✓ ~80%':''}</span>`;}
+  s12b.oninput=upd;s12a.oninput=upd;upd();
 };</script>
 
 <!-- ===== SLIDE 13 ===== -->
 <section class="slide" id="s13">
-  <div class="kicker">13 · Why correction is needed</div>
-  <h2>Raw ensembles are biased and overconfident</h2>
-  <p class="lede">Here's the same idea, case by case. Each row is one forecast: the bar is its P10–P90 range, the dot is what actually happened. If the range were honest, the dot would fall inside ~80% of the time. Raw ranges are too narrow — too many dots escape (red).</p>
+  <div class="kicker">13 · Learning α from data</div>
+  <h2>Training the calibration</h2>
+  <p class="lede">Collect (raw forecast, observation) pairs from a training archive. Fit the mapping — the residual spread tells you α. More samples → more stable estimate. Switch to ML fit to capture non-linear model errors.</p>
   <div class="cols">
     <div class="notes">
       <ul class="points">
-        <li>Raw ensembles are too narrow — the truth falls outside the range too often.</li>
-        <li>A calibrated P10–P90 band should contain the observation ~80% of the time.</li>
-        <li>That's why raw output must be adjusted before probabilities can be trusted.</li>
+        <li>Need a long training archive: same location, same lead time, same model version.</li>
+        <li><strong>Linear (MOS):</strong> fast, interpretable, handles most systematic biases. Still operational at NWS/NOAA.</li>
+        <li><strong>ML (EMOS/QRF):</strong> captures curved relationships — but needs more samples to be stable.</li>
+        <li><strong>α from residuals:</strong> after fitting the mean correction, measure the residual spread σ<sub>res</sub>. Then α = σ<sub>res</sub> / σ<sub>raw</sub>.</li>
+        <li>α is re-estimated every model cycle — model upgrades shift it.</li>
       </ul>
-      <p class="takeaway">Comment: drag the spread wider and watch red dots move inside the bars — the coverage climbs toward the honest 80%.</p>
+      <p class="takeaway">Comment: tight scatter around the fit line = low residual error = smaller α needed. Wide scatter = large unexplained variance = α must be large. Fewer samples makes α noisy.</p>
     </div>
     <div class="viz">
-      <div class="controls">
-        <div class="ctrl"><label>Spread inflation</label><input type="range" id="s13i" min="5" max="32" value="6"><span class="val" id="s13iv"></span></div>
+      <div class="tabs">
+        <button class="ghost on" id="s13lin">Linear fit</button>
+        <button class="ghost" id="s13ml">ML fit</button>
       </div>
+      <div class="controls"><div class="ctrl"><label>Training samples</label><input type="range" id="s13n" min="8" max="120" value="40"><span class="val" id="s13nv">40</span></div></div>
       <div class="chart-wrap"><canvas id="s13chart"></canvas></div>
       <div class="stat-row" id="s13stats"></div>
     </div>
   </div>
 </section>
 <script>SLIDE_INIT['s13']=function(){
-  const n=16,r=seededRand(606);
-  const center=Array.from({length:n},(_,i)=>+(Math.sin(i/2.2)*1.3).toFixed(2));
-  const obs=center.map(c=>+(c+gaussian(r)*1.15).toFixed(2));
-  const labels=center.map((_,i)=>'case '+(i+1));
-  function build(infl){const w=infl/10;
-    const bars=center.map(c=>[+(c-1.28*w).toFixed(2),+(c+1.28*w).toFixed(2)]);
-    const inside=obs.map((o,i)=>o>=bars[i][0]&&o<=bars[i][1]);
-    return{bars,inside,cov:Math.round(inside.filter(Boolean).length/n*100)};}
-  let b=build(6);
-  const ch=new Chart(document.getElementById('s13chart'),{type:'bar',data:{labels,datasets:[
-    {label:'P10–P90',data:b.bars,backgroundColor:C.band2,borderColor:C.teal,borderWidth:1,borderRadius:4,barPercentage:.6,order:3},
-    {type:'line',label:'obs',data:obs,showLine:false,pointRadius:6,pointBackgroundColor:b.inside.map(v=>v?C.tealD:C.coral),pointBorderColor:'#fff',pointBorderWidth:1.5,order:1}]},
-    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,animation:{duration:150},plugins:{legend:{display:false},tooltip:{enabled:false}},
-      scales:{x:{...axis('Value'),min:-4,max:4},y:{...axis(''),ticks:{font:{size:11}}}}}});
-  function upd(){const infl=+s13i.value;s13iv.textContent=(infl/10).toFixed(1)+'×';b=build(infl);
-    ch.data.datasets[0].data=b.bars;ch.data.datasets[1].pointBackgroundColor=b.inside.map(v=>v?C.tealD:C.coral);ch.update();
-    s13stats.innerHTML=`<span class="pill ${Math.abs(b.cov-80)<12?'good':'bad'}">coverage <b>${b.cov}%</b></span><span class="pill">target <b>80%</b></span><span class="pill">${b.cov<70?'overconfident (too narrow)':b.cov>90?'under-confident (too wide)':'well-calibrated'}</span>`;}
-  s13i.oninput=upd;upd();
-};</script>
-
-<!-- ===== SLIDE 14 ===== -->
-<section class="slide" id="s14">
-  <div class="kicker">14 · Methods</div>
-  <h2>From bias correction to ML calibration</h2>
-  <p class="lede">Calibration starts simple — fit the forecast to a history of observations. Machine-learning methods capture non-linear patterns a straight line misses. Either way, you're only as good as your training archive.</p>
-  <div class="cols">
-    <div class="notes">
-      <ul class="points">
-        <li>Simple regression: fit forecast mean and spread to a long observation history.</li>
-        <li>Advanced methods capture non-linear patterns from the same archive.</li>
-        <li>The correction is only as good as the training data.</li>
-      </ul>
-      <p class="takeaway">Comment: the true relationship is curved. The linear fit can't bend; the ML fit follows it — but only with enough samples.</p>
-    </div>
-    <div class="viz">
-      <div class="tabs">
-        <button class="ghost on" id="s14lin">Linear fit</button>
-        <button class="ghost" id="s14ml">ML fit</button>
-      </div>
-      <div class="controls"><div class="ctrl"><label>Training samples</label><input type="range" id="s14n" min="8" max="120" value="40"><span class="val" id="s14nv">40</span></div></div>
-      <div class="chart-wrap"><canvas id="s14chart"></canvas></div>
-      <div class="stat-row" id="s14stats"></div>
-    </div>
-  </div>
-</section>
-<script>SLIDE_INIT['s14']=function(){
-  const r=seededRand(808);let mode='lin';
+  const r=seededRand(808);let mode='lin';const sigRaw=0.55;
   const all=Array.from({length:120},()=>{const x=r()*10-5;return{x:+x.toFixed(2),y:+(0.06*x*x+0.3*x+gaussian(r)*0.8).toFixed(2)};});
   const fitLin=p=>{const n=p.length,sx=p.reduce((s,a)=>s+a.x,0),sy=p.reduce((s,a)=>s+a.y,0),sxx=p.reduce((s,a)=>s+a.x*a.x,0),sxy=p.reduce((s,a)=>s+a.x*a.y,0);const b=(n*sxy-sx*sy)/(n*sxx-sx*sx),a=(sy-b*sx)/n;return x=>a+b*x;};
   function fitQuad(p){let S=[0,0,0,0,0],Sy=[0,0,0];p.forEach(q=>{const x=q.x;S[0]++;S[1]+=x;S[2]+=x*x;S[3]+=x**3;S[4]+=x**4;Sy[0]+=q.y;Sy[1]+=q.y*x;Sy[2]+=q.y*x*x;});
     const M=[[S[0],S[1],S[2]],[S[1],S[2],S[3]],[S[2],S[3],S[4]]];const det=m=>m[0][0]*(m[1][1]*m[2][2]-m[1][2]*m[2][1])-m[0][1]*(m[1][0]*m[2][2]-m[1][2]*m[2][0])+m[0][2]*(m[1][0]*m[2][1]-m[1][1]*m[2][0]);
     const D=det(M),rep=(c,v)=>{const m=M.map(r=>r.slice());for(let i=0;i<3;i++)m[i][c]=v[i];return det(m)/D;};const a=rep(0,Sy),b=rep(1,Sy),c=rep(2,Sy);return x=>a+b*x+c*x*x;}
   const xs=linspace(-5,5,60);
-  const ch=new Chart(document.getElementById('s14chart'),{type:'scatter',data:{datasets:[
+  const ch=new Chart(document.getElementById('s13chart'),{type:'scatter',data:{datasets:[
     {data:all.slice(0,40),pointBackgroundColor:'rgba(180,178,169,.7)',pointRadius:3},
     {type:'line',data:[],borderColor:C.blue,borderWidth:3,pointRadius:0,tension:.2}]},
     options:{responsive:true,maintainAspectRatio:false,animation:{duration:200},plugins:{legend:{display:false},tooltip:{enabled:false}},
-      scales:{x:{...axis('Raw forecast'),min:-5.5,max:5.5},y:{...axis('Observed'),min:-4,max:5}}}});
-  function upd(){const n=+s14n.value;s14nv.textContent=n;const pts=all.slice(0,n);ch.data.datasets[0].data=pts;
-    const f=mode==='lin'?fitLin(pts):fitQuad(pts);ch.data.datasets[1].data=xs.map(x=>({x,y:+f(x).toFixed(3)}));ch.data.datasets[1].borderColor=mode==='lin'?C.blue:C.tealD;
-    const rmse=Math.sqrt(pts.reduce((s,p)=>s+(f(p.x)-p.y)**2,0)/pts.length).toFixed(2);ch.update();
-    s14stats.innerHTML=`<span class="pill">${mode==='lin'?'linear':'ML (non-linear)'}</span><span class="pill">RMSE <b>${rmse}</b></span><span class="pill">${n<20?'too few samples — unstable':'enough data to trust'}</span>`;}
-  s14lin.onclick=()=>{mode='lin';s14lin.classList.add('on');s14ml.classList.remove('on');upd();};
-  s14ml.onclick=()=>{mode='ml';s14ml.classList.add('on');s14lin.classList.remove('on');upd();};
-  s14n.oninput=upd;upd();
+      scales:{x:{...axis('Raw forecast (anomaly)'),min:-5.5,max:5.5},y:{...axis('Observed (anomaly)'),min:-4,max:5}}}});
+  function upd(){const n=+s13n.value;s13nv.textContent=n;const pts=all.slice(0,n);ch.data.datasets[0].data=pts;
+    const f=mode==='lin'?fitLin(pts):fitQuad(pts);
+    ch.data.datasets[1].data=xs.map(x=>({x,y:+f(x).toFixed(3)}));ch.data.datasets[1].borderColor=mode==='lin'?C.blue:C.tealD;
+    const resStd=Math.sqrt(pts.reduce((s,p)=>{const e=f(p.x)-p.y;return s+e*e;},0)/pts.length);
+    const alpha=+(resStd/sigRaw).toFixed(2);ch.update();
+    s13stats.innerHTML=`<span class="pill">${mode==='lin'?'linear':'ML (non-linear)'}</span><span class="pill">σ<sub>res</sub>=<b>${resStd.toFixed(2)}</b></span><span class="pill">α = σ<sub>res</sub>/σ<sub>raw</sub> = <b>${alpha}</b></span><span class="pill">${n<20?'too few samples — unstable':'stable estimate'}</span>`;}
+  s13lin.onclick=()=>{mode='lin';s13lin.classList.add('on');s13ml.classList.remove('on');upd();};
+  s13ml.onclick=()=>{mode='ml';s13ml.classList.add('on');s13lin.classList.remove('on');upd();};
+  s13n.oninput=upd;upd();
 };</script>
 
-<!-- ===== SLIDE 15 ===== -->
+<!-- ===== SLIDE 14 (was 15) ===== -->
 <section class="slide" id="s15">
-  <div class="kicker">15 · Two qualities</div>
-  <h2>One event can't verify a probability</h2>
-  <p class="lede">Think of each forecast as a dart. A thrower can be accurate yet inconsistent, or consistent yet off the mark — and one throw tells you almost nothing. You need both: darts that land <em>tightly</em> and <em>on the bullseye</em>. Move the sliders to group the darts on the centre.</p>
+  <div class="kicker">14 · Two qualities</div>
+  <h2>Accuracy and consistency</h2>
+  <p class="lede">One throw tells you almost nothing. You need many — and they must land <em>tightly</em> (consistent) <em>and</em> on the bullseye (accurate). Move the sliders to reach both.</p>
   <div class="cols">
     <div class="notes">
       <ul class="points">
@@ -833,9 +828,9 @@ SLIDE_INIT['s1']=function(){
 
 <!-- ===== SLIDE 16 ===== -->
 <section class="slide" id="s16">
-  <div class="kicker">16 · One score</div>
-  <h2>Scoring the whole distribution in one number</h2>
-  <p class="lede">The CRPS is the shaded area — the <em>squared</em> gap between the forecast's cumulative curve and a step at the observation (coral line, at 0), integrated across all outcomes: F² to the left of the obs, (1−F)² to the right. Centre the forecast on the observation and tighten it and the area shrinks toward zero; over-hedge with huge spread and it grows again.</p>
+  <div class="kicker">15 · One score</div>
+  <h2>CRPS</h2>
+  <p class="lede">CRPS measures the gap between the forecast CDF (teal) and a perfect step at the observation. The shaded lens is that gap — it shrinks as you centre and tighten, grows when you over-hedge. Lower is better.</p>
   <div class="cols">
     <div class="notes">
       <ul class="points">
@@ -843,7 +838,7 @@ SLIDE_INIT['s1']=function(){
         <li>Measures how far the full distribution is from the observed outcome.</li>
         <li>Bias = 0 and spread → 0 (a sharp spike on the observation) gives CRPS ≈ 0.</li>
       </ul>
-      <p class="takeaway">Comment: "bias" here is the offset from the observed value. At bias 0 the forecast is centred on the obs, so shrinking the spread drives CRPS to zero — as it should.</p>
+      <p class="takeaway">Comment: the shaded lens shows the gap for intuition; the score itself sums it <em>squared</em> — ∫(F−H)² — so larger misses cost disproportionately more. "Bias" is the offset from the observed value, so at zero bias, tightening the spread drives CRPS toward zero.</p>
     </div>
     <div class="viz">
       <div class="controls">
@@ -859,66 +854,32 @@ SLIDE_INIT['s1']=function(){
   const xs=linspace(-6,6,241),OBS=0,DX=xs[1]-xs[0];
   const cdf=(mu,s)=>xs.map(x=>0.5*(1+erf((x-mu)/(s*Math.SQRT2))));
   const stepY=x=>x>=OBS?1:0;
-  // squared gap (F - H)^2 : equals F^2 left of the obs, (1-F)^2 right of it
+  // squared gap (F - H)^2 — the integrand the score actually sums (F^2 left of obs, (1-F)^2 right)
   const sqgap=fc=>xs.map((x,i)=>{const d=fc[i]-stepY(x);return d*d;});
-  // CRPS = area under that squared gap === the shaded region below
+  // CRPS = integral of that squared gap (validated vs the closed-form Gaussian CRPS)
   const crps=g=>{let a=0;for(let i=1;i<g.length;i++)a+=(g[i-1]+g[i])/2*DX;return a;};
   function pts(arr){return xs.map((x,i)=>({x:+x.toFixed(3),y:+arr[i].toFixed(4)}));}
   let fc=cdf(-1.2,0.8);
+  // datasets: [0] perfect step at the obs, [1] forecast CDF shading the lens down to that step
   const ch=new Chart(document.getElementById('s16chart'),{type:'line',data:{datasets:[
-    {data:pts(sqgap(fc)),borderColor:C.coral,borderWidth:1.5,pointRadius:0,fill:'origin',backgroundColor:'rgba(232,118,58,.22)',tension:0,order:3},
-    {data:pts(fc),borderColor:C.tealD,borderWidth:3,pointRadius:0,fill:false,tension:.15,order:1},
-    {data:pts(xs.map(stepY)),borderColor:C.ink,borderWidth:2,pointRadius:0,stepped:true,fill:false,order:2}]},
+    {data:pts(xs.map(stepY)),borderColor:C.ink,borderWidth:2,pointRadius:0,stepped:true,fill:false,order:2},
+    {data:pts(fc),borderColor:C.tealD,borderWidth:3,pointRadius:0,fill:{target:0},backgroundColor:'rgba(232,118,58,.20)',tension:.15,order:1}]},
     options:{responsive:true,maintainAspectRatio:false,animation:{duration:120},plugins:{legend:{display:false},tooltip:{enabled:false},
       annotation:{annotations:{obs:{type:'line',xMin:OBS,xMax:OBS,borderColor:C.coral,borderWidth:2,borderDash:[4,3],
         label:{display:true,content:'observed',position:'start',color:C.coral,backgroundColor:'transparent',font:{size:11}}}}}},
       scales:{x:{...axis('Outcome'),type:'linear',min:-6,max:6},y:{...axis('Cumulative probability'),min:0,max:1}}}});
   function upd(){const mu=(+s16b.value)/10,s=(+s16s.value)/10;s16bv.textContent=mu.toFixed(1);s16sv.textContent=s.toFixed(1);
-    fc=cdf(mu,s);const g=sqgap(fc);ch.data.datasets[0].data=pts(g);ch.data.datasets[1].data=pts(fc);ch.update();
-    const score=crps(g).toFixed(3),ideal=Math.abs(mu)<0.25&&s<0.9;
+    fc=cdf(mu,s);ch.data.datasets[1].data=pts(fc);ch.update();
+    const score=crps(sqgap(fc)).toFixed(3),ideal=Math.abs(mu)<0.25&&s<0.9;
     s16stats.innerHTML=`<span class="pill ${ideal?'good':'bad'}">CRPS <b>${score}</b></span><span class="pill">lower = better</span><span class="pill">${Math.abs(mu)>0.4?'biased':'on target'} · ${s>1.6?'over-hedged':s<0.5?'very sharp':'tuned'}</span>`;}
   s16b.oninput=upd;s16s.oninput=upd;upd();
 };</script>
 
-<!-- ===== SLIDE 17 ===== -->
-<section class="slide" id="s17">
-  <div class="kicker">17 · The reliability diagram</div>
-  <h2>Does the model mean what it says?</h2>
-  <p class="lede">The reliability diagram plots what the model claimed against what happened. Perfect calibration sits on the diagonal. When the curve bows below it at high probabilities, the model is overconfident — saying 90% when only 70% verify.</p>
-  <div class="cols">
-    <div class="notes">
-      <ul class="points">
-        <li>Plot stated probability vs actual observed frequency.</li>
-        <li>Below the diagonal at high probabilities = overconfidence.</li>
-        <li>First check before trusting any probability: are the stated odds real?</li>
-      </ul>
-      <p class="takeaway">Comment: the further the curve sags from the grey diagonal, the less you should trust the raw numbers. Calibration drags it back onto the line.</p>
-    </div>
-    <div class="viz">
-      <div class="controls"><div class="ctrl"><label>Overconfidence</label><input type="range" id="s17o" min="0" max="10" value="6"><span class="val" id="s17ov"></span></div></div>
-      <div class="chart-wrap"><canvas id="s17chart"></canvas></div>
-      <div class="stat-row" id="s17stats"></div>
-    </div>
-  </div>
-</section>
-<script>SLIDE_INIT['s17']=function(){
-  const bins=[5,15,25,35,45,55,65,75,85,95];
-  const curve=o=>{const k=o/10;return bins.map(p=>{const x=p/100;return +(Math.max(0,Math.min(1,x+(0.5-x)*k*Math.sin(Math.PI*x)*1.1))*100).toFixed(1);});};
-  const ch=new Chart(document.getElementById('s17chart'),{type:'scatter',data:{datasets:[
-    {data:bins.map(p=>({x:p,y:p})),type:'line',borderColor:C.gray,borderWidth:1.5,borderDash:[6,4],pointRadius:0,order:3},
-    {data:bins.map((p,i)=>({x:p,y:curve(6)[i]})),type:'line',borderColor:C.tealD,borderWidth:2.5,pointRadius:5,pointBackgroundColor:C.tealD,tension:.2,order:1}]},
-    options:{responsive:true,maintainAspectRatio:false,animation:{duration:150},plugins:{legend:{display:false},tooltip:{callbacks:{title:i=>'forecast '+i[0].raw.x+'%',label:i=>'observed '+i.raw.y+'%'}}},
-      scales:{x:{...axis('Forecast probability %'),min:0,max:100},y:{...axis('Observed frequency %'),min:0,max:100}}}});
-  function upd(){const o=+s17o.value;s17ov.textContent=o;ch.data.datasets[1].data=bins.map((p,i)=>({x:p,y:curve(o)[i]}));ch.update();
-    s17stats.innerHTML=`<span class="pill ${o<2?'good':'bad'}">${o<2?'well calibrated — on the diagonal':'overconfident — curve sags below the line'}</span>`;}
-  s17o.oninput=upd;upd();
-};</script>
-
-<!-- ===== SLIDE 18 ===== -->
+<!-- ===== SLIDE 16 (was 18) ===== -->
 <section class="slide" id="s18">
-  <div class="kicker">18 · Spread-skill</div>
-  <h2>Good ensembles: spread predicts error</h2>
-  <p class="lede">In a healthy ensemble, wide-spread days really are harder to forecast and narrow-spread days are reliably accurate. The spread-skill check asks whether spread actually tracks error. Tune it from noise to a clean relationship.</p>
+  <div class="kicker">16 · Spread-skill</div>
+  <h2>Spread–skill relationship</h2>
+  <p class="lede">Wide-spread days should be harder to forecast; narrow-spread days should be accurate. Spread-skill check: does spread actually correlate with error? Tune from noise to a clean relationship.</p>
   <div class="cols">
     <div class="notes">
       <ul class="points">
@@ -952,9 +913,9 @@ SLIDE_INIT['s1']=function(){
 
 <!-- ===== SLIDE 19 ===== -->
 <section class="slide" id="s19">
-  <div class="kicker">19 · Across timescales</div>
-  <h2>From nowcast to seasonal: one framework</h2>
-  <p class="lede">The same probabilistic machinery runs from minutes to months — only the source of skill shifts. Short range rides the atmosphere; long range leans on the slow memory of ocean and land. Slide the lead time to see the handover.</p>
+  <div class="kicker">17 · Across timescales</div>
+  <h2>Nowcast to seasonal</h2>
+  <p class="lede">Same probabilistic machinery, minutes to months — only the source of skill shifts. Short range: atmospheric dynamics. Long range: ocean and land memory. Slide lead time to see the handover.</p>
   <div class="cols">
     <div class="notes">
       <ul class="points">
@@ -990,7 +951,7 @@ SLIDE_INIT['s1']=function(){
 
 <!-- ===== SLIDE 20 RECAP ===== -->
 <section class="slide dark" id="s20" data-dark="1">
-  <div class="kicker">20 · Recap</div>
+  <div class="kicker">18 · Recap</div>
   <h2>Three things to remember</h2>
   <p class="lede">The whole talk in three ideas — each with a live reminder.</p>
   <div class="recap">
@@ -1015,7 +976,7 @@ SLIDE_INIT['s1']=function(){
 
 <!-- ===== SLIDE 21 REFERENCES ===== -->
 <section class="slide" id="s21">
-  <div class="kicker">21 · Go deeper</div>
+  <div class="kicker">19 · Go deeper</div>
   <h2>References &amp; further reading</h2>
   <p class="lede">Where these ideas come from — operational documentation and the foundational literature.</p>
   <div class="refgrid">
