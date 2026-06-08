@@ -772,65 +772,11 @@ SLIDE_INIT['s1']=function(){
   s13n.oninput=upd;upd();
 };</script>
 
-<!-- ===== SLIDE 14 (was 15) ===== -->
-<section class="slide" id="s15">
-  <div class="kicker">14 · Two qualities</div>
-  <h2>Accuracy and consistency</h2>
-  <p class="lede">One throw tells you almost nothing. You need many — and they must land <em>tightly</em> (consistent) <em>and</em> on the bullseye (accurate). Move the sliders to reach both.</p>
-  <div class="cols">
-    <div class="notes">
-      <ul class="points">
-        <li>Accuracy: the darts cluster <em>on the bullseye</em> — right on average.</li>
-        <li>Reliability: throw after throw the darts land in the <em>same place</em> — consistent and repeatable (stated odds match observed frequency).</li>
-        <li>A good forecast is both: a tight grouping AND on the bullseye — neither alone is enough.</li>
-      </ul>
-      <p class="takeaway">Comment: one rainy day — a single dart — can't tell you if "30%" was right. Only the pattern of many throws reveals whether a forecaster is accurate and reliable.</p>
-    </div>
-    <div class="viz">
-      <div class="controls">
-        <div class="ctrl"><label>Accuracy (closeness to bullseye)</label><input type="range" id="s15a" min="0" max="10" value="3"><span class="val" id="s15av"></span></div>
-        <div class="ctrl"><label>Reliability (consistency of grouping)</label><input type="range" id="s15r" min="0" max="10" value="3"><span class="val" id="s15rv"></span></div>
-      </div>
-      <div class="chart-wrap"><canvas id="s15chart"></canvas></div>
-      <div class="stat-row" id="s15stats"></div>
-    </div>
-  </div>
-</section>
-<script>SLIDE_INIT['s15']=function(){
-  const cv=document.getElementById('s15chart'),ctx=cv.getContext('2d');
-  cv.style.display='block';cv.style.width='100%';cv.style.height='100%';
-  const r=seededRand(4242),N=13;
-  const base=Array.from({length:N},()=>({u:gaussian(r),v:gaussian(r)}));   // fixed throw pattern, stays put as sliders move
-  const ang=-0.72,dirx=Math.cos(ang),diry=Math.sin(ang);                   // cluster drifts upper-right as accuracy drops
-  let W=0,H=0,cx=0,cy=0,R=0;
-  function resize(){const dpr=window.devicePixelRatio||1;W=cv.clientWidth;H=cv.clientHeight;cv.width=Math.max(1,W*dpr);cv.height=Math.max(1,H*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);cx=W/2;cy=H/2;R=0.42*Math.min(W,H);}
-  function draw(){
-    const a=+s15a.value,rl=+s15r.value;s15av.textContent=a;s15rv.textContent=rl;
-    ctx.clearRect(0,0,W,H);
-    const rings=5;
-    for(let k=rings;k>=1;k--){const rad=R*k/rings;ctx.beginPath();ctx.arc(cx,cy,rad,0,2*Math.PI);
-      ctx.fillStyle=(k%2===0)?'rgba(120,203,191,0.16)':'#ffffff';ctx.fill();
-      ctx.lineWidth=1;ctx.strokeStyle='rgba(0,0,0,0.10)';ctx.stroke();}
-    ctx.beginPath();ctx.arc(cx,cy,R,0,2*Math.PI);ctx.lineWidth=2;ctx.strokeStyle=C.tealD;ctx.stroke();
-    ctx.beginPath();ctx.arc(cx,cy,R*0.13,0,2*Math.PI);ctx.fillStyle=C.coral;ctx.fill();
-    const offset=R*0.55*(1-a/10),sigma=R*(0.26*(1-rl/10)+0.016);
-    const ccx=cx+dirx*offset,ccy=cy+diry*offset,m=9;
-    base.forEach(p=>{let x=ccx+p.u*sigma,y=ccy+p.v*sigma;x=Math.max(m,Math.min(W-m,x));y=Math.max(m,Math.min(H-m,y));
-      ctx.beginPath();ctx.arc(x,y,4.5,0,2*Math.PI);ctx.fillStyle=C.tealD;ctx.fill();ctx.lineWidth=1.5;ctx.strokeStyle='#fff';ctx.stroke();});
-    const good=a>=6&&rl>=6;
-    s15stats.innerHTML=`<span class="pill ${good?'good':'bad'}">${good?'tight cluster on the bullseye — accurate AND reliable':(a>=6?'centred but scattered — right on average, each shot unreliable':rl>=6?'tight but off-centre — consistent yet biased':'scattered and off-centre — neither accurate nor reliable')}</span>`;
-  }
-  function upd(){resize();draw();}
-  s15a.oninput=draw;s15r.oninput=draw;
-  window.addEventListener('resize',function(){if(document.getElementById('s15').classList.contains('active'))upd();});
-  upd();
-};</script>
-
 <!-- ===== SLIDE 16 ===== -->
 <section class="slide" id="s16">
-  <div class="kicker">15 · One score</div>
+  <div class="kicker">14 · One score</div>
   <h2>CRPS</h2>
-  <p class="lede">CRPS measures the gap between the forecast CDF (teal) and a perfect step at the observation. The shaded lens is that gap — it shrinks as you centre and tighten, grows when you over-hedge. Lower is better.</p>
+  <p class="lede">CRPS measures the gap between the forecast CDF (teal) and a perfect step at the observation. A good forecast must be both on-target (centred) and sharp (tight grouping) — CRPS is the single score that rewards both at once. The shaded lens is that gap — it shrinks as you centre and tighten, grows when you over-hedge. Lower is better.</p>
   <div class="cols">
     <div class="notes">
       <ul class="points">
@@ -877,7 +823,7 @@ SLIDE_INIT['s1']=function(){
 
 <!-- ===== SLIDE 16 (was 18) ===== -->
 <section class="slide" id="s18">
-  <div class="kicker">16 · Spread-skill</div>
+  <div class="kicker">15 · Spread-skill</div>
   <h2>Spread–skill relationship</h2>
   <p class="lede">Wide-spread days should be harder to forecast; narrow-spread days should be accurate. Spread-skill check: does spread actually correlate with error? Tune from noise to a clean relationship.</p>
   <div class="cols">
@@ -913,7 +859,7 @@ SLIDE_INIT['s1']=function(){
 
 <!-- ===== SLIDE 19 ===== -->
 <section class="slide" id="s19">
-  <div class="kicker">17 · Across timescales</div>
+  <div class="kicker">16 · Across timescales</div>
   <h2>Nowcast to seasonal</h2>
   <p class="lede">Same probabilistic machinery, minutes to months — only the source of skill shifts. Short range: atmospheric dynamics. Long range: ocean and land memory. Slide lead time to see the handover.</p>
   <div class="cols">
@@ -951,7 +897,7 @@ SLIDE_INIT['s1']=function(){
 
 <!-- ===== SLIDE 20 RECAP ===== -->
 <section class="slide dark" id="s20" data-dark="1">
-  <div class="kicker">18 · Recap</div>
+  <div class="kicker">17 · Recap</div>
   <h2>Three things to remember</h2>
   <p class="lede">The whole talk in three ideas — each with a live reminder.</p>
   <div class="recap">
@@ -976,7 +922,7 @@ SLIDE_INIT['s1']=function(){
 
 <!-- ===== SLIDE 21 REFERENCES ===== -->
 <section class="slide" id="s21">
-  <div class="kicker">19 · Go deeper</div>
+  <div class="kicker">18 · Go deeper</div>
   <h2>References &amp; further reading</h2>
   <p class="lede">Where these ideas come from — operational documentation and the foundational literature.</p>
   <div class="refgrid">
