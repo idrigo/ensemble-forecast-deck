@@ -920,9 +920,59 @@ SLIDE_INIT['s1']=function(){
     options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false,type:'linear',min:0,max:100},y:{display:false,min:0,max:100}}}});
 };</script>
 
+<!-- ===== SLIDE 22 BUSINESS SHIFT ===== -->
+<section class="slide" id="s22">
+  <div class="kicker">18 · Why it matters</div>
+  <h2>From one number to odds you can act on</h2>
+  <p class="lede">For decades a forecast meant a single number. An ensemble gives a fan of outcomes that widens with lead time. Drag the day to read the odds — the median, the 50% and 80% ranges, and the value with only a 10% chance of being exceeded.</p>
+  <div class="cols">
+    <div class="notes">
+      <ul class="points">
+        <li><strong>Decide under risk.</strong> Act on the probability of crossing a threshold versus your tolerance — not on a single point guess.</li>
+        <li><strong>Speak in confidence.</strong> "Expect ~10°, 80% chance 7–13°, could reach 15°" beats false-precision "10°".</li>
+        <li><strong>Edge over deterministic.</strong> Priced risk means better margins and fewer surprises than single-number competitors.</li>
+      </ul>
+      <p class="takeaway">Same forecast, richer decision. The point estimate is still there — it's just the peak of a distribution you can now hedge against.</p>
+    </div>
+    <div class="viz">
+      <div class="viz-title">Temperature fan — the range of outcomes widens with lead time</div>
+      <div class="controls"><div class="ctrl"><label>Lead time</label><input type="range" id="s22t" min="0" max="10" step="1" value="5"><span class="val" id="s22tv">D+5</span></div></div>
+      <div class="chart-wrap"><canvas id="s22chart"></canvas></div>
+      <div class="stat-row" id="s22stats"></div>
+    </div>
+  </div>
+</section>
+<script>SLIDE_INIT['s22']=function(){
+  const r=seededRand(42);const N=44,days=11,drift=0.06;
+  const members=Array.from({length:N},()=>{let v=10+gaussian(r)*0.4;const a=[+v.toFixed(2)];for(let d=1;d<days;d++){v+=gaussian(r)*0.78+drift;a.push(+v.toFixed(2));}return a;});
+  const labels=Array.from({length:days},(_,d)=>'D+'+d);
+  const pdq=(d,p)=>{const col=members.map(m=>m[d]).sort((a,b)=>a-b);return col[Math.max(0,Math.min(N-1,Math.floor(p*(N-1))))];};
+  const band=p=>labels.map((_,d)=>+pdq(d,p).toFixed(2));
+  const p10=band(.1),p25=band(.25),p50=band(.5),p75=band(.75),p90=band(.9);
+  const ds=[
+    {data:p10,borderColor:'transparent',pointRadius:0,tension:.25,fill:false},
+    {data:p90,borderColor:'transparent',pointRadius:0,tension:.25,fill:'-1',backgroundColor:'rgba(120,203,191,0.18)'},
+    {data:p25,borderColor:'transparent',pointRadius:0,tension:.25,fill:false},
+    {data:p75,borderColor:'transparent',pointRadius:0,tension:.25,fill:'-1',backgroundColor:'rgba(120,203,191,0.42)'},
+    {data:p50,borderColor:C.tealD,borderWidth:2.5,pointRadius:0,tension:.25,fill:false}
+  ];
+  const ch=new Chart(document.getElementById('s22chart'),{type:'line',data:{labels,datasets:ds},
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:200},
+      plugins:{legend:{display:false},tooltip:{enabled:false},annotation:{annotations:{
+        det:{type:'line',yMin:10,yMax:10,borderColor:C.gray,borderWidth:1.5,borderDash:[6,4],label:{display:true,content:'old: single "10°"',position:'start',color:'#888',backgroundColor:'transparent',font:{size:11}}},
+        ts:{type:'line',xMin:5,xMax:5,borderColor:C.coral,borderWidth:2,borderDash:[5,3],label:{display:true,content:'selected day',position:'start',color:C.coral,backgroundColor:'transparent',font:{size:11}}}
+      }}},
+      scales:{x:{...axis('Lead time')},y:{...axis('Temperature (°C)'),suggestedMin:2,suggestedMax:18}}}});
+  function upd(){const n=+s22t.value;s22tv.textContent='D+'+n;
+    ch.options.plugins.annotation.annotations.ts.xMin=n;ch.options.plugins.annotation.annotations.ts.xMax=n;ch.update('none');
+    const med=p50[n],hi=p90[n],lo=p10[n];
+    s22stats.innerHTML=`<span class="pill"><b style="color:#1D9E75">—</b> median</span><span class="pill"><b style="color:#78CBBF">▣</b> 50% / 80% range</span><span class="pill">at <b>D+${n}</b></span><span class="pill">median <b>${med.toFixed(1)}°</b></span><span class="pill">80% within <b>${lo.toFixed(1)}–${hi.toFixed(1)}°</b></span><span class="pill bad">10% chance above <b>${hi.toFixed(1)}°</b></span><span class="pill">10% chance below <b>${lo.toFixed(1)}°</b></span>`;}
+  s22t.oninput=upd;upd();
+};</script>
+
 <!-- ===== SLIDE 21 REFERENCES ===== -->
 <section class="slide" id="s21">
-  <div class="kicker">18 · Go deeper</div>
+  <div class="kicker">19 · Go deeper</div>
   <h2>References &amp; further reading</h2>
   <p class="lede">Where these ideas come from — operational documentation and the foundational literature.</p>
   <div class="refgrid">
